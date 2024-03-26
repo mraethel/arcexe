@@ -1,0 +1,20 @@
+mode: decode, arg: videoplayback.webm
+[00000000004860d0] main libvlc debug: VLC media player - 3.0.20 Vetinari
+[00000000004860d0] main libvlc debug: Copyright © 1996-2023 the VideoLAN team
+[00000000004860d0] main libvlc debug: revision 3.0.20-0-g6f0d0ab126b
+[00000000004860d0] main libvlc debug: configured with <removed>
+[00000000004860d0] main libvlc debug: searching plug-in modules
+[00000000004860d0] main libvlc debug: loading plugins cache file /nix/store/ivpp1jj4ak2yymxyf3zw242dpd339zix-libvlc-3.0.20/lib/vlc/plugins/plugins.dat
+[00000000004860d0] main libvlc debug: recursively browsing `/nix/store/ivpp1jj4ak2yymxyf3zw242dpd339zix-libvlc-3.0.20/lib/vlc/plugins'
+[00000000004860d0] main libvlc debug: plug-ins loaded: 498 modules
+[0000000000487980] main logger debug: looking for logger module matching "any": 4 candidates
+[0000000000487980] main logger debug: using logger module "console"
+[00000000004860d0] main libvlc debug: translation test: code is "C"
+[000000000048a450] main keystore debug: looking for keystore module matching "memory": 3 candidates
+[000000000048a450] main keystore debug: using keystore module "memory"
+[00000000004860d0] main libvlc debug: CPU has capabilities MMX MMXEXT SSE SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 SSE4A AVX AVX2 FPU 
+VLC media player - 3.0.20 Vetinari
+Copyright © 1996-2023 the VideoLAN team
+revision 3.0.20-0-g6f0d0ab126b
+configured with <removed>
+[23033644]2057:arcan_shmif_drop(): [shmif:drop] last words: no valid media source
