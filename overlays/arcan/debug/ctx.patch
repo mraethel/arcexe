@@ -1,0 +1,132 @@
+Index: src/engine/alt/nbio.c
+==================================================================
+--- a/src/engine/alt/nbio.c
++++ b/src/engine/alt/nbio.c
+@@ -364,11 +364,10 @@
+ /*
+  * same function, just different lookup strings for the Lua- udata types
+  */
+ static int nbio_closer(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:close");
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIO");
+ 	if (!(*ib))
+ 		LUA_ETRACE("open_nonblock:close", "already closed", 0);
+ 
+ /* arbitrary timeout though we should not really hit this and the alternatives
+@@ -380,11 +379,10 @@
+ 	LUA_ETRACE("open_nonblock:close", NULL, 0);
+ }
+ 
+ static int nbio_datahandler(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:data_handler");
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIO");
+ 	if (!(*ib))
+ 		LUA_ETRACE("open_nonblock:data_handler", "already closed", 0);
+ 
+ /* always remove the last known handler refs */
+@@ -439,11 +437,10 @@
+ 	return 1;
+ }
+ 
+ static int nbio_socketclose(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:close");
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIOs");
+ 	if (!(*ib))
+ 		LUA_ETRACE("open_nonblock:close", "already closed", 0);
+ 
+ 	alt_nbio_close(L, ib);
+@@ -450,11 +447,10 @@
+ 	LUA_ETRACE("open_nonblock:close", NULL, 0);
+ }
+ 
+ static int nbio_socketaccept(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:accept");
+ 
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIOs");
+ 	if (!(*ib))
+ 		LUA_ETRACE("open_nonblock:accept", "already closed", 0);
+ 
+@@ -498,11 +494,10 @@
+ 	LUA_ETRACE("open_nonblock:accept", NULL, 1);
+ }
+ 
+ static int nbio_writequeue(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:writequeue");
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIO");
+ 	if (!(*ib)){
+ 		lua_pushnumber(L, 0);
+ 		lua_pushnumber(L, 0);
+ 		LUA_ETRACE("open_nonblock:writequeue", "already closed", 2);
+@@ -521,11 +516,10 @@
+ 	LUA_ETRACE("open_nonblock:writequeue", NULL, 2);
+ }
+ 
+ static int nbio_write(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:write");
+ 	struct nonblock_io** ud = luaL_checkudata(L, 1, "nonblockIO");
+ 	struct nonblock_io* iw = *ud;
+ 
+ 	if (!iw)
+ 		LUA_ETRACE("open_nonblock:close", "already closed", 0);
+@@ -826,11 +820,10 @@
+ 	}
+ }
+ 
+ static int nbio_lf(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:lf_strip")
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIO");
+ 	struct nonblock_io* ir = *ib;
+ 
+ 	ir->lfstrip = luaL_optbnumber(L, 2, 0);
+ 
+@@ -837,11 +830,10 @@
+ 	LUA_ETRACE("open_nonblock:lf_strip", NULL, 0);
+ }
+ 
+ static int nbio_read(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock:read");
+ 	struct nonblock_io** ib = luaL_checkudata(L, 1, "nonblockIO");
+ 	struct nonblock_io* ir = *ib;
+ 
+ 	if (!ir)
+ 		LUA_ETRACE("open_nonblock:read", "already closed", 0);
+@@ -952,12 +944,10 @@
+ 	}
+ }
+ 
+ int alt_nbio_open(lua_State* L)
+ {
+-	LUA_TRACE("open_nonblock");
+-
+ 	const char* metatable = "nonblockIO";
+ 	char* unlink_fn = NULL;
+ 
+ 	int wrmode = luaL_optbnumber(L, 2, 0) ? O_WRONLY : O_RDONLY;
+ 	bool fifo = false, ignerr = false, use_socket = false;
+
+Index: src/engine/alt/support.h
+==================================================================
+--- a/src/engine/alt/support.h
++++ b/src/engine/alt/support.h
+@@ -9,11 +9,11 @@
+  * Each function that crosses the LUA->C barrier has a LUA_TRACE macro
+  * reference first to allow quick build-time interception.
+  */
+ #ifdef LUA_TRACE_STDERR
+ #define LUA_TRACE(fsym) fprintf(stderr, "(%lld:%s)->%s\n", \
+-	arcan_timemillis(), luactx.lastsrc, fsym);
++	arcan_timemillis(), luactx.last_ctx, fsym);
+ 
+ /*
+  * This trace function scans the stack and writes the information about
+  * calls to a CSV file (arcan.trace): function;timestamp;type;type
+  * This is useful for benchmarking / profiling / test coverage and
+
